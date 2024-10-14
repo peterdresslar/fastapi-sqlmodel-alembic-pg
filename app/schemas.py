@@ -11,7 +11,7 @@ class Item(ItemBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True  # Pydantic v2
 
 class UserBase(BaseModel):
     name: str
@@ -24,5 +24,5 @@ class User(UserBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
