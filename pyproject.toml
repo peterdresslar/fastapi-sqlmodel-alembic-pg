@@ -1,0 +1,14 @@
+[project]
+name = "fastapi-pydantic-sqlalchemy"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.2",
+    "psycopg2-binary>=2.9.9",
+    "pydantic-settings>=2.5.2",
+    "pydantic>=2.9.2",
+    "sqlalchemy>=2.0.35",
+    "uvicorn>=0.31.1",
+]
