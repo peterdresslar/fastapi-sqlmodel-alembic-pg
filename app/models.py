@@ -24,7 +24,7 @@ class ItemBase(SQLModel):
 
 # Properties to receive on item creation
 class ItemCreate(ItemBase):
-    pass
+    owner_id: int
 
 # Database model, database table hardcoded to "items"
 class Item(ItemBase, table=True):
@@ -34,3 +34,13 @@ class Item(ItemBase, table=True):
     owner: User | None = Relationship(back_populates="items")
 
     __tablename__: str = "items"
+
+# Read model for items with owner email
+class ItemWithOwnerEmail(SQLModel):
+    id: int
+    title: str
+    owner_id: int
+    owner_email: str
+
+    class Config:
+        from_attributes = True
