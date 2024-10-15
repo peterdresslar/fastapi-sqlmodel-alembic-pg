@@ -68,29 +68,5 @@ Once the server is running, you can interact with the API:
    curl "http://localhost:3000/users/"
    ```
 
-3. Access the interactive API documentation at `http://localhost:8000/docs` ... in fact, this is the easiest way to test out the API in action.
-
-## Project Structure
-
-- `app/`: Main application directory
-  - `main.py`: FastAPI application and route definitions
-  - `models.py`: SQLAlchemy models
-  - `schemas.py`: Pydantic schemas
-  - `crud.py`: Database operations
-  - `database.py`: Database connection and session management
-  - `config.py`: Configuration management
-  - `alembic/`: Alembic migrations --- this is a weird place for this folder, but the official example uses the same approach
-- `requirements.txt`: Project dependencies
-
-## Key Features
-
-- FastAPI for efficient API development
-- SQLAlchemy for ORM, demonstrating direct integration without SQLModel
-- Pydantic for request/response modeling and validation
-- Alembic for database migration management
-- Demonstration of database-generated IDs in API responses
-
-## License
-
-MIT
+3. Access the interactive API documentation at `http://localhost:8000/docs` ... in fact, this is the easiest way to test out the API in action
 
