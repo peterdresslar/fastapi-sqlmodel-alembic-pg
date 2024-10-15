@@ -1,7 +1,8 @@
 from fastapi import FastAPI, Depends
-from sqlalchemy.orm import Session
-from . import crud, schemas
-from .database import get_db
+from sqlmodel import Session
+from . import crud
+from .models import UserCreate, User
+from .database import get_session
 
 app = FastAPI()
 
@@ -9,19 +10,16 @@ app = FastAPI()
 async def root():
     return {"message": "Hello World"}
 
-@app.get("/users")
-async def get_users():
-    return {"users": []}
+@app.get("/users", response_model=list[User])
+def get_users(skip: int = 0, limit: int = 10, session: Session = Depends(get_session)):
+    users = crud.get_users(session, skip=skip, limit=limit)
+    return users
 
-# new user: must post with a name param and an email param. 
-# returns the user object with a postgres-generated user id.
-# note that the return type is a User object, not a UserCreate object.
-@app.post("/users")
-async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = crud.create_user(db=db, user=user)
-    return db_user
+@app.post("/users", response_model=User)
+def create_user(user_in: UserCreate, session: Session = Depends(get_session)):
+    user = User.model_validate(user_in)
+    return crud.create_user(session, user) # since session is refreshed, should return user with id
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=3000)  # adjust port as needed
-

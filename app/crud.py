@@ -1,19 +1,20 @@
-from sqlalchemy.orm import Session
-from . import models, schemas
+from sqlmodel import Session, select
+from . import models
 
-def get_user_by_email(db: Session, email: str):
-    return db.query(models.User).filter(models.User.email == email).first()
+def get_user_by_email(session: Session, email: str):
+    statement = select(models.User).where(models.User.email == email)
+    return session.exec(statement).first()
 
-def get_users(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(models.User).offset(skip).limit(limit).all()
+def get_users(session: Session, skip: int = 0, limit: int = 10):
+    statement = select(models.User).offset(skip).limit(limit)
+    return session.exec(statement).all()
 
-def create_user(db: Session, user: schemas.UserCreate):
-    db_user = models.User(email=user.email, name=user.name)
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
+def create_user(session: Session, user: models.User):
+    session.add(user)
+    session.commit()
+    session.refresh(user) # required; otherwise User is stale
+    return user
 
-def get_items(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(models.Item).offset(skip).limit(limit).all()
-
+def get_items(session: Session, skip: int = 0, limit: int = 10):
+    statement = select(models.Item).offset(skip).limit(limit)
+    return session.exec(statement).all()
